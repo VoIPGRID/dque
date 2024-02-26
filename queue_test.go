@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/VoIPGRID/dque"
+	"github.com/VoIPGRID/dque/v3"
 )
 
 // item2 is the thing we'll be storing in the queue
@@ -52,7 +52,7 @@ func testQueue_AddRemoveLoop(t *testing.T, turbo bool) {
 		}
 	}
 
-	assert(t, 0 == q.Size(), "Size is not 0")
+	assert(t, q.Size() == 0, "Size is not 0")
 
 	firstSegNum, lastSegNum := q.SegmentNumbers()
 
@@ -60,7 +60,7 @@ func testQueue_AddRemoveLoop(t *testing.T, turbo bool) {
 	assert(t, firstSegNum == lastSegNum, "The first segment must match the last")
 
 	// Assert that the first segment is #2
-	assert(t, 2 == firstSegNum, "The first segment is not 2")
+	assert(t, firstSegNum == 2, "The first segment is not 2")
 
 	// Now reopen the queue and check our assertions again.
 	q.Close()
@@ -72,7 +72,7 @@ func testQueue_AddRemoveLoop(t *testing.T, turbo bool) {
 	assert(t, firstSegNum == lastSegNum, "After opening, the first segment must match the second")
 
 	// Assert that the first segment is #2
-	assert(t, 2 == firstSegNum, "After opening, the first segment is not 2")
+	assert(t, firstSegNum == 2, "After opening, the first segment is not 2")
 
 	if err := os.RemoveAll(qName); err != nil {
 		t.Fatal("Error cleaning up the queue directory", err)
@@ -117,7 +117,7 @@ func testQueue_Add2Remove1(t *testing.T, turbo bool) {
 	assert(t, firstSegNum < lastSegNum, "The first segment cannot match the second")
 
 	// Assert that the first segment is #2
-	assert(t, 2 == lastSegNum, "The last segment must be 2")
+	assert(t, lastSegNum == 2, "The last segment must be 2")
 
 	// Now reopen the queue and check our assertions again.
 	q.Close()
@@ -129,16 +129,16 @@ func testQueue_Add2Remove1(t *testing.T, turbo bool) {
 	assert(t, firstSegNum < lastSegNum, "After opening, the first segment can not match the second")
 
 	// Assert that the first segment is #2
-	assert(t, 2 == lastSegNum, "After opening, the last segment must be 2")
+	assert(t, lastSegNum == 2, "After opening, the last segment must be 2")
 
 	// Test Peek to make sure the size doesn't change
-	assert(t, 2 == q.Size(), "Queue size is not 2 before peeking")
+	assert(t, q.Size() == 2, "Queue size is not 2 before peeking")
 	obj, err := q.Peek()
 	if err != nil {
 		t.Fatal("Error peeking at the queue", err)
 	}
 
-	assert(t, 2 == q.Size(), "After peaking, aueue size must still be 2")
+	assert(t, q.Size() == 2, "After peaking, aueue size must still be 2")
 	assert(t, obj != nil, "Peeked object must not be nil.")
 
 	if err := os.RemoveAll(qName); err != nil {
@@ -169,15 +169,15 @@ func testQueue_Add9Remove8(t *testing.T, turbo bool) {
 	}
 
 	// Check the Size calculation
-	assert(t, 9 == q.Size(), "the size is calculated wrong.  Should be 9")
+	assert(t, q.Size() == 9, "the size is calculated wrong.  Should be 9")
 
 	firstSegNum, lastSegNum := q.SegmentNumbers()
 
 	// Assert that the first segment is #1
-	assert(t, 1 == firstSegNum, "the first segment is not 1")
+	assert(t, firstSegNum == 1, "the first segment is not 1")
 
 	// Assert that the last segment is #4
-	assert(t, 3 == lastSegNum, "the last segment is not 3")
+	assert(t, lastSegNum == 3, "the last segment is not 3")
 
 	// Dequeue 8 items
 	for i := 0; i < 8; i++ {
@@ -205,7 +205,7 @@ func testQueue_Add9Remove8(t *testing.T, turbo bool) {
 	assert(t, firstSegNum == lastSegNum, "The first segment must match the second")
 
 	// Assert that the first segment is #3
-	assert(t, 3 == firstSegNum, "The last segment is not 3")
+	assert(t, firstSegNum == 3, "The last segment is not 3")
 
 	// Now reopen the queue and check our assertions again.
 	q.Close()
@@ -215,7 +215,7 @@ func testQueue_Add9Remove8(t *testing.T, turbo bool) {
 	assert(t, firstSegNum == lastSegNum, "After opening, the first segment must match the second")
 
 	// Assert that the last segment is #3
-	assert(t, 3 == lastSegNum, "After opening, the last segment is not 3")
+	assert(t, lastSegNum == 3, "After opening, the last segment is not 3")
 
 	if err := os.RemoveAll(qName); err != nil {
 		t.Fatal("Error cleaning up the queue directory:", err)
@@ -234,7 +234,7 @@ func testQueue_EmptyDequeue(t *testing.T, turbo bool) {
 
 	// Create new queue
 	q := newQ(t, qName, turbo)
-	assert(t, 0 == q.Size(), "Expected an empty queue")
+	assert(t, q.Size() == 0, "Expected an empty queue")
 
 	// Dequeue an item from the empty queue
 	item, err := q.Dequeue()

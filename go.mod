@@ -1,4 +1,4 @@
-module github.com/VoIPGRID/dque
+module github.com/VoIPGRID/dque/v3
 
 go 1.21
 

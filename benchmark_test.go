@@ -10,7 +10,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/VoIPGRID/dque"
+	"github.com/VoIPGRID/dque/v3"
 )
 
 // item3 is the thing we'll be storing in the queue

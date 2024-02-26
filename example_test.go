@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/VoIPGRID/dque"
+	"github.com/VoIPGRID/dque/v3"
 )
 
 // Item is what we'll be storing in the queue.  It can be any struct
